@@ -46,6 +46,11 @@ export async function createApp(
   const app = express();
 
   app.use(express.json());
+  // DEBUG: trace all auth requests
+  app.use("/api/auth", (req, _res, next) => {
+    console.log(`[auth-trace] ${req.method} ${req.url} from ${req.socket.remoteAddress} host=${req.headers.host}`);
+    next();
+  });
   app.use(httpLogger);
   const privateHostnameGateEnabled =
     opts.deploymentMode === "authenticated" && opts.deploymentExposure === "private";
