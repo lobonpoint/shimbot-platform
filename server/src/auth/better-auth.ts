@@ -87,6 +87,11 @@ export function createBetterAuthInstance(db: Db, config: Config, trustedOrigins?
       enabled: true,
       requireEmailVerification: false,
     },
+    advanced: {
+      // Disable CSRF check since we run behind a trusted reverse proxy (Caddy)
+      // The proxy handles TLS termination and access control
+      disableCSRFCheck: true,
+    },
   };
 
   if (!baseUrl) {
