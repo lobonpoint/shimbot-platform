@@ -101,7 +101,7 @@ export function shimbotRoutes(_db: Db) {
         COALESCE(i.daily_velocity, 0) AS daily_velocity,
         i.days_of_stock,
         i.reorder_point,
-        i.updated_at
+        i.last_updated AS updated_at
       FROM products p
       LEFT JOIN inventory_status i ON p.asin = i.asin
       WHERE p.status = 'active'
