@@ -24,6 +24,7 @@ import { sidebarBadgeRoutes } from "./routes/sidebar-badges.js";
 import { llmRoutes } from "./routes/llms.js";
 import { assetRoutes } from "./routes/assets.js";
 import { accessRoutes } from "./routes/access.js";
+import { shimbotRoutes } from "./routes/shimbot.js";
 import type { BetterAuthSessionResult } from "./auth/better-auth.js";
 
 type UiMode = "none" | "static" | "vite-dev";
@@ -45,26 +46,7 @@ export async function createApp(
 ) {
   const app = express();
 
-  // DEBUG: trace all requests BEFORE body parsing
-  app.use((req, _res, next) => {
-    if (req.url.startsWith("/api/auth")) {
-      console.log(`[pre-parse] ${req.method} ${req.url} from=${req.socket.remoteAddress} host=${req.headers.host} ct=${req.headers["content-type"]} cl=${req.headers["content-length"]} te=${req.headers["transfer-encoding"]}`);
-    }
-    next();
-  });
-  app.use((req, res, next) => {
-    express.json()(req, res, (err) => {
-      if (err) {
-        console.error(`[json-parse-error] ${req.method} ${req.url} error=${err.message} type=${err.type} status=${(err as any).status}`);
-      }
-      next(err);
-    });
-  });
-  // DEBUG: trace all auth requests AFTER body parsing
-  app.use("/api/auth", (req, _res, next) => {
-    console.log(`[post-parse] ${req.method} ${req.url} from ${req.socket.remoteAddress} host=${req.headers.host}`);
-    next();
-  });
+  app.use(express.json());
   app.use(httpLogger);
   const privateHostnameGateEnabled =
     opts.deploymentMode === "authenticated" && opts.deploymentExposure === "private";
@@ -131,6 +113,7 @@ export async function createApp(
   api.use(activityRoutes(db));
   api.use(dashboardRoutes(db));
   api.use(sidebarBadgeRoutes(db));
+  api.use(shimbotRoutes(db));
   api.use(
     accessRoutes(db, {
       deploymentMode: opts.deploymentMode,
