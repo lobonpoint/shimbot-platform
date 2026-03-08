@@ -45,10 +45,17 @@ export async function createApp(
 ) {
   const app = express();
 
+  // DEBUG: trace all requests BEFORE body parsing
+  app.use((req, _res, next) => {
+    if (req.url.startsWith("/api/auth")) {
+      console.log(`[pre-parse] ${req.method} ${req.url} from=${req.socket.remoteAddress} host=${req.headers.host} ct=${req.headers["content-type"]} cl=${req.headers["content-length"]} te=${req.headers["transfer-encoding"]}`);
+    }
+    next();
+  });
   app.use(express.json());
-  // DEBUG: trace all auth requests
+  // DEBUG: trace all auth requests AFTER body parsing
   app.use("/api/auth", (req, _res, next) => {
-    console.log(`[auth-trace] ${req.method} ${req.url} from ${req.socket.remoteAddress} host=${req.headers.host}`);
+    console.log(`[post-parse] ${req.method} ${req.url} from ${req.socket.remoteAddress} host=${req.headers.host}`);
     next();
   });
   app.use(httpLogger);
