@@ -99,7 +99,10 @@ export function createBetterAuthInstance(db: Db, config: Config, trustedOrigins?
 export function createBetterAuthHandler(auth: BetterAuthInstance): RequestHandler {
   const handler = toNodeHandler(auth);
   return (req, res, next) => {
-    void Promise.resolve(handler(req, res)).catch(next);
+    void Promise.resolve(handler(req, res)).catch((err) => {
+      console.error("[better-auth] Handler error:", err?.message ?? String(err), err?.stack ?? "");
+      next(err);
+    });
   };
 }
 
