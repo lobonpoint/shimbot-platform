@@ -9,6 +9,9 @@ import {
   SquarePen,
   Network,
   Settings,
+  BarChart3,
+  CheckCircle,
+  Package,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { SidebarSection } from "./SidebarSection";
@@ -94,6 +97,12 @@ export function Sidebar() {
         <SidebarProjects />
 
         <SidebarAgents />
+
+        <SidebarSection label="ShimBot">
+          <SidebarNavItem to="/shimbot/ppc" label="PPC" icon={BarChart3} />
+          <SidebarNavItem to="/shimbot/decisions" label="Decisions" icon={CheckCircle} />
+          <SidebarNavItem to="/shimbot/inventory" label="Inventory" icon={Package} />
+        </SidebarSection>
 
         <SidebarSection label="Company">
           <SidebarNavItem to="/org" label="Org" icon={Network} />

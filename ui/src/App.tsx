@@ -25,6 +25,9 @@ import { CompanySettings } from "./pages/CompanySettings";
 import { DesignGuide } from "./pages/DesignGuide";
 import { OrgChart } from "./pages/OrgChart";
 import { NewAgent } from "./pages/NewAgent";
+import { PPCDashboard } from "./pages/shimbot/PPCDashboard";
+import { Decisions } from "./pages/shimbot/Decisions";
+import { Inventory } from "./pages/shimbot/Inventory";
 import { AuthPage } from "./pages/Auth";
 import { BoardClaimPage } from "./pages/BoardClaim";
 import { InviteLandingPage } from "./pages/InviteLanding";
@@ -130,6 +133,9 @@ function boardRoutes() {
       <Route path="inbox/new" element={<Inbox />} />
       <Route path="inbox/all" element={<Inbox />} />
       <Route path="design-guide" element={<DesignGuide />} />
+      <Route path="shimbot/ppc" element={<PPCDashboard />} />
+      <Route path="shimbot/decisions" element={<Decisions />} />
+      <Route path="shimbot/inventory" element={<Inventory />} />
     </>
   );
 }
