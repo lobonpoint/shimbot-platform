@@ -52,7 +52,14 @@ export async function createApp(
     }
     next();
   });
-  app.use(express.json());
+  app.use((req, res, next) => {
+    express.json()(req, res, (err) => {
+      if (err) {
+        console.error(`[json-parse-error] ${req.method} ${req.url} error=${err.message} type=${err.type} status=${(err as any).status}`);
+      }
+      next(err);
+    });
+  });
   // DEBUG: trace all auth requests AFTER body parsing
   app.use("/api/auth", (req, _res, next) => {
     console.log(`[post-parse] ${req.method} ${req.url} from ${req.socket.remoteAddress} host=${req.headers.host}`);
